@@ -1,22 +1,29 @@
 function init(){
 
     var base_osm1 = L.tileLayer(
-    		'http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}',{
+    		'http://{s}x={x}&y={y}&z={z}',{
+			subdomains: ['openmapsurfer.uni-hd.de/tiles/roads/', 
+				'korona.geog.uni-heidelberg.de/tiles/roads/', 
+				'129.206.74.245:8001/tms_r.ashx?'],
 			minZoom: 2,
-			maxZoom: 18}
-    );
-	var base_osm2 = L.tileLayer(
-    		'http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}',{
+			maxZoom: 18});
+    
+	var base_osm2 =  L.tileLayer(
+    		'http://{s}x={x}&y={y}&z={z}',{
+    		subdomains: ['openmapsurfer.uni-hd.de/tiles/roads/', 
+				'korona.geog.uni-heidelberg.de/tiles/roads/', 
+				'129.206.74.245:8001/tms_r.ashx?'],
 			minZoom: 2,
-			maxZoom: 18}
-    );
-    var base_osm3 = L.tileLayer(
-    		'http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}',{
+			maxZoom: 18});
+			
+    var base_osm3 =  L.tileLayer(
+    		'http://{s}x={x}&y={y}&z={z}',{
+    		subdomains: ['openmapsurfer.uni-hd.de/tiles/roads/', 
+				'korona.geog.uni-heidelberg.de/tiles/roads/', 
+				'129.206.74.245:8001/tms_r.ashx?'],
 			minZoom: 2,
-			maxZoom: 18,
-			attribution: 'Basemap: <a href="http://giscience.uni-hd.de/">Heidelberg Uni.</a> & &copy; <a href="http://www.openstreetmap.org/copyright">OSM</a>'}
-    );
-	
+			maxZoom: 18});
+
 	function getLayers(list,color_list){
 		var temp_list = [];
 		window.color = color_list;
@@ -99,7 +106,11 @@ function init(){
 	legends1.update1 = function (field){
 		if(!(field)){field = init_field}
 		var max = getMax(col_max,field);
-		var labels = [max[1][4]+1 + " - " + max[0],max[1][3]+1 + " - " + max[1][4],max[1][2]+1 + " - " + max[1][3],max[1][1]+1 +" - " + max[1][2],"1 - " + max[1][1]];
+		var labels = [(max[1][4]+1).toLocaleString() + " - " + (max[0]).toLocaleString(),
+					(max[1][3]+1).toLocaleString() + " - " + (max[1][4]).toLocaleString(),
+					(max[1][2]+1).toLocaleString() + " - " + (max[1][3]).toLocaleString(),
+					(max[1][1]+1).toLocaleString() +" - " + (max[1][2]).toLocaleString(),
+					"1 - " + (max[1][1]).toLocaleString()];
 		var html = "<p><b>"+ field +"</b></p>";
 		var color = color1
 		for(i=0;i<5;i++){
@@ -109,7 +120,11 @@ function init(){
 	legends2.update2 = function (field){
 		if(!(field)){field = init_field}
 		var max = getMax(col_max,field);
-		var labels = [max[1][4]+1 + " - " + max[0],max[1][3]+1 + " - " + max[1][4],max[1][2]+1 + " - " + max[1][3],max[1][1]+1 +" - " + max[1][2],"1 - " + max[1][1]];
+		var labels = [(max[1][4]+1).toLocaleString() + " - " + (max[0]).toLocaleString(),
+					(max[1][3]+1).toLocaleString() + " - " + (max[1][4]).toLocaleString(),
+					(max[1][2]+1).toLocaleString() + " - " + (max[1][3]).toLocaleString(),
+					(max[1][1]+1).toLocaleString() +" - " + (max[1][2]).toLocaleString(),
+					"1 - " + (max[1][1]).toLocaleString()];
 		var html = "<p><b>"+ field +"</b></p>";
 		var color = color2
 		for(i=0;i<5;i++){
@@ -119,7 +134,11 @@ function init(){
 	legends3.update3 = function (field){
 		if(!(field)){field = init_field}
 		var max = getMax(col_max,field);
-		var labels = [max[1][4]+1 + " - " + max[0],max[1][3]+1 + " - " + max[1][4],max[1][2]+1 + " - " + max[1][3],max[1][1]+1 +" - " + max[1][2],"1 - " + max[1][1]];
+		var labels = [(max[1][4]+1).toLocaleString() + " - " + (max[0]).toLocaleString(),
+					(max[1][3]+1).toLocaleString() + " - " + (max[1][4]).toLocaleString(),
+					(max[1][2]+1).toLocaleString() + " - " + (max[1][3]).toLocaleString(),
+					(max[1][1]+1).toLocaleString() +" - " + (max[1][2]).toLocaleString(),
+					"1 - " + (max[1][1]).toLocaleString()];
 		var html = "<p><b>"+ field +"</b></p>";
 		var color = color3
 		for(i=0;i<5;i++){
@@ -150,7 +169,7 @@ function init(){
 
 function getOnEachFeature(feature, layer) {
 	layer.bindPopup("<b>" + feature.properties.DISTRICT
-				+ "</b><br/>"+ field +": " + getData(NRCS_data,feature.properties.OCHA_PCODE,field));
+				+ "</b><br/>"+ field +": " + getData(NRCS_data,feature.properties.OCHA_PCODE,field).toLocaleString());
     layer.on({
         mouseover: onMouseOver,
 		mouseout: onMouseOut,
@@ -166,7 +185,6 @@ function zoomToFeature(e) {
 		}else{
 		temp = e.target.getBounds();
 		window.zoomed = e.target.feature.properties.OCHA_PCODE;}
-	console.log(temp);
 	map1.unsync(map2);
 	map1.unsync(map3);
 	map2.unsync(map1);
@@ -182,7 +200,6 @@ function zoomToFeature(e) {
 	map2.sync(map3);
 	map3.sync(map1);
 	map3.sync(map2);
-	console.log(window.zoomed);
 }		
 
 function onMouseOver(e) {
@@ -251,6 +268,7 @@ var map1 = maps[0];
 var map2 = maps[1];
 var map3 = maps[2];
 var bounds = map1.getBounds();
+console.log(bounds);
 var zoomed = NaN;
 
 document.getElementById("dmg_full_1").innerHTML = parseInt( col_max[0].sum ).toLocaleString();
