@@ -4,9 +4,9 @@ function init(){
 	
     var base_osm1 = L.tileLayer(
     		'http://{s}x={x}&y={y}&z={z}',{
-			subdomains: ['openmapsurfer.uni-hd.de/tiles/roads/', 
-				'korona.geog.uni-heidelberg.de/tiles/roads/', 
-				'129.206.74.245:8001/tms_r.ashx?'],
+			subdomains: [//'openmapsurfer.uni-hd.de/tiles/roads/', 
+				//'129.206.74.245:8001/tms_r.ashx?'
+				'korona.geog.uni-heidelberg.de/tiles/roads/'],
 			minZoom: 2,
 			maxZoom: 18});
     
